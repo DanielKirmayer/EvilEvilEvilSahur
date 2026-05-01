@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(InsultClient.self) private var client
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-            Text("Hello everyone I am testing my commit")
+            Text(client.currentInsult.insult)
         }
         .padding()
+        .task {
+            await client.generateInsult()
+        }
     }
 }
 
 #Preview {
     ContentView()
+        .environment(InsultClient())
 }
