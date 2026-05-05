@@ -9,30 +9,32 @@ import SwiftUI
 
 @Observable
 class GameViewModel {
-    var insultClient = InsultClient()
-    var round = GameRound()
-    var playerInput: String = ""
-    
-    func startNewRound() async {
-        await insultClient.generateInsult()
-        round.insult = insultClient.currentInsult.insult
-        round.explanations = []
+    private(set) var roundStarted = false
+    var allResponsesSubmitted: Bool {
+        responses.count == playerCount
     }
     
-    func submitExplanation() {
-        guard !playerInput.isEmpty else { return }
-        round.explanations.append(Explanation(text: playerInput))
-        playerInput = ""
+    private(set) var playerCount = 1
+    private(set) var responses: [String] = []
+    private(set) var currentResponseSubmitted = false
+    
+    func incrementPlayerCount(change: Int) {
+        playerCount += change
+        if playerCount < 1 {
+            playerCount = 1
+        }
     }
-}
-
-struct Explanation: Identifiable {
-    let id = UUID()
-    var text: String
-}
-
-@Observable
-class GameRound {
-    var insult: String = ""
-    var explanations: [Explanation] = []
+    
+    func onGameStart() {
+        roundStarted = true
+    }
+    
+    func submitResponse(response: String) {
+        responses.append(response)
+        currentResponseSubmitted = true
+    }
+    
+    func resetResponse() {
+        currentResponseSubmitted = false
+    }
 }
