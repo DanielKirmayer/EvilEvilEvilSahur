@@ -32,7 +32,7 @@ struct ContentView: View {
                     .font(.title3)
                     
                     NavigationLink("How to Play") {
-                        //HowToPlayView() (All u Big M)
+                        HowToPlayView()
                     }
                     .buttonStyle(.bordered)
                     .font(.title3)
