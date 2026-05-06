@@ -43,7 +43,3 @@ class GameViewModel {
     }
 }
 
-struct Response: Identifiable {
-    var id: Int
-    var content: String
-}
