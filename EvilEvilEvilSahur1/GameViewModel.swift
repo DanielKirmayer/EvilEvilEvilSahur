@@ -15,7 +15,7 @@ class GameViewModel {
     }
     
     private(set) var playerCount = 1
-    private(set) var responses: [String] = []
+    private(set) var responses: [Response] = []
     private(set) var currentResponseSubmitted = false
     
     func incrementPlayerCount(change: Int) {
@@ -29,12 +29,21 @@ class GameViewModel {
         roundStarted = true
     }
     
-    func submitResponse(response: String) {
+    func submitResponse(response: Response) {
         responses.append(response)
         currentResponseSubmitted = true
+        
+        if allResponsesSubmitted {
+            responses.shuffle()
+        }
     }
     
     func resetResponse() {
         currentResponseSubmitted = false
     }
+}
+
+struct Response: Identifiable {
+    var id: Int
+    var content: String
 }

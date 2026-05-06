@@ -11,6 +11,8 @@ struct GameView: View {
     @Environment(GameViewModel.self) private var model
     @Environment(InsultClient.self) private var client
     
+    @State private var selectedResponse: Response?
+    
     @State private var currentResponse: String = ""
     
     var body: some View {
@@ -38,7 +40,7 @@ struct GameView: View {
                             text: $currentResponse
                         )
                         .onSubmit {
-                            model.submitResponse(response: currentResponse)
+                            model.submitResponse(response: Response(id: model.responses.count + 1, content: currentResponse))
                             currentResponse = ""
                         }
                         .textFieldStyle(.roundedBorder)
@@ -54,9 +56,22 @@ struct GameView: View {
                     }
                 }
                 else {
-                    
+                    Text("Responses")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    List {
+                        ForEach(model.responses, id: \.id) { response in
+                            Text(response.content)
+                                .onTapGesture {
+                                    selectedResponse = response
+                                }
+                        }
+                    }
                 }
             }
+        }
+        .sheet(item: $selectedResponse) { value in
+            SelectedResponseView(response: value)
         }
         .task {
             await client.generateInsult()
