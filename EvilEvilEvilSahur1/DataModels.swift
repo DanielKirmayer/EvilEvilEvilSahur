@@ -9,3 +9,8 @@ import Foundation
 struct Insult: Codable {
     var insult: String
 }
+
+struct Response: Identifiable {
+    var id: Int
+    var content: String
+}
