@@ -26,7 +26,7 @@ struct ContentView: View {
                 
                 VStack(spacing: 20) {
                     NavigationLink("Start Game") {
-                        //GameView() (All u Big M)
+                        GameView()
                     }
                     .buttonStyle(.borderedProminent)
                     .font(.title3)
@@ -56,4 +56,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environment(InsultClient())
+        .environment(GameViewModel())
 }

@@ -56,22 +56,34 @@ struct GameView: View {
                     }
                 }
                 else {
-                    Text("Responses")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    List {
-                        ForEach(model.responses, id: \.id) { response in
-                            Text(response.content)
-                                .onTapGesture {
-                                    selectedResponse = response
-                                }
+                    if !model.gameOver {
+                        Text("Responses")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        Text("Click on which one the group thinks is funniest!")
+                            .font(.headline)
+                        List {
+                            ForEach(model.responses, id: \.id) { response in
+                                Text(response.content)
+                                    .onTapGesture {
+                                        selectedResponse = response
+                                    }
+                            }
                         }
+                    }
+                    else {
+                        Text("Game Over!")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        Text("The winning response: \"\(model.winningResponse?.content ?? "")\"")
+                        Text("Written by Player \(model.winningResponse?.id ?? 0)")
+                        Text("Press the Back Arrow to return to main menu and start a new round!")
                     }
                 }
             }
         }
         .sheet(item: $selectedResponse) { value in
-            SelectedResponseView(response: value)
+            SelectedResponseView(response: value, model: model)
         }
         .task {
             await client.generateInsult()

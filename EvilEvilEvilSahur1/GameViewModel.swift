@@ -18,6 +18,9 @@ class GameViewModel {
     private(set) var responses: [Response] = []
     private(set) var currentResponseSubmitted = false
     
+    private(set) var gameOver = false
+    private(set) var winningResponse: Response?
+    
     func incrementPlayerCount(change: Int) {
         playerCount += change
         if playerCount < 1 {
@@ -27,6 +30,11 @@ class GameViewModel {
     
     func onGameStart() {
         roundStarted = true
+    }
+    
+    func onGameEnd(votedResponse: Response) {
+        winningResponse = votedResponse
+        gameOver = true
     }
     
     func submitResponse(response: Response) {
