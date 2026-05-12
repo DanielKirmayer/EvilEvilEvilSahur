@@ -5,6 +5,7 @@
 //  Created by Student on 5/1/26.
 //
 import Foundation
+import UIKit
 
 @Observable
 class InsultClient {
@@ -19,10 +20,25 @@ class InsultClient {
             let (data, _) = try await URLSession.shared.data(from: unwrappedURL)
             let insultResult: Insult = try JSONDecoder().decode(Insult.self, from: data)
             currentInsult = insultResult
+            currentInsult.insult = currentInsult.insult.decodingHTMLEntities
         } catch let error {
             print(error)
         }
     }
 }
 
-
+extension String {
+    var decodingHTMLEntities: String {
+        guard let data = self.data(using: .utf8) else { return self }
+        
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+        
+        if let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
+            return attributedString.string
+        }
+        return self
+    }
+}
