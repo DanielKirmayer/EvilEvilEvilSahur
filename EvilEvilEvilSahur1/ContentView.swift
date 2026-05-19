@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
 
 struct ContentView: View {
     var body: some View {
@@ -38,7 +37,7 @@ struct ContentView: View {
                     .font(.title3)
                     
                     NavigationLink("Settings") {
-                        //SettingsView() (All u Big M)
+                        SettingsView()
                     }
                     .buttonStyle(.bordered)
                     .font(.title3)

@@ -9,6 +9,9 @@ import SwiftUI
 
 @Observable
 class GameViewModel {
+    var filterExplicit = false
+    let bannedWords: [String] = ["fuck", "fucker", "motherfucker", "nigger", "nigga", "shit", "ass", "asshole", "dick", "cock", "penis", "vagina", "pussy", "cunt", "faggot", "fag"]
+    
     private(set) var roundStarted = false
     var allResponsesSubmitted: Bool {
         responses.count == playerCount
